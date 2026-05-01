@@ -14,6 +14,7 @@ export interface Cat {
   mood: 'happy' | 'neutral' | 'sad';
   last_litter_cleaned: string | null;
   avatar_emoji: string;
+  gender: 'male' | 'female';
 }
 
 export interface Asset {

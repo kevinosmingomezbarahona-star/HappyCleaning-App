@@ -20,16 +20,16 @@ export const mockMembers: HouseholdMember[] = [
 
 // 10 real cats: 7 males, 3 females
 export const mockCats: Cat[] = [
-  { id: 'c1', name: 'Dayson', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 2 * 3600000).toISOString(), avatar_emoji: '🐱' },
-  { id: 'c2', name: 'Tom', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 3 * 3600000).toISOString(), avatar_emoji: '🐱' },
-  { id: 'c3', name: 'Jerry', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 5 * 3600000).toISOString(), avatar_emoji: '🐱' },
-  { id: 'c4', name: 'Oliver', mood: 'neutral', last_litter_cleaned: new Date(Date.now() - 8 * 3600000).toISOString(), avatar_emoji: '🐱' },
-  { id: 'c5', name: 'Ricky', mood: 'neutral', last_litter_cleaned: new Date(Date.now() - 10 * 3600000).toISOString(), avatar_emoji: '🐱' },
-  { id: 'c6', name: 'Felix', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 1 * 3600000).toISOString(), avatar_emoji: '🐱' },
-  { id: 'c7', name: 'Topo', mood: 'sad', last_litter_cleaned: new Date(Date.now() - 14 * 3600000).toISOString(), avatar_emoji: '🐱' },
-  { id: 'c8', name: 'Brittney', mood: 'neutral', last_litter_cleaned: new Date(Date.now() - 9 * 3600000).toISOString(), avatar_emoji: '🐈' },
-  { id: 'c9', name: 'Daisy', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 4 * 3600000).toISOString(), avatar_emoji: '🐈' },
-  { id: 'c10', name: 'Brisa', mood: 'sad', last_litter_cleaned: new Date(Date.now() - 16 * 3600000).toISOString(), avatar_emoji: '🐈' },
+  { id: 'c1', name: 'Dayson', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 2 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male' },
+  { id: 'c2', name: 'Tom', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 3 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male' },
+  { id: 'c3', name: 'Jerry', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 5 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male' },
+  { id: 'c4', name: 'Oliver', mood: 'neutral', last_litter_cleaned: new Date(Date.now() - 8 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male' },
+  { id: 'c5', name: 'Ricky', mood: 'neutral', last_litter_cleaned: new Date(Date.now() - 10 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male' },
+  { id: 'c6', name: 'Felix', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 1 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male' },
+  { id: 'c7', name: 'Topo', mood: 'sad', last_litter_cleaned: new Date(Date.now() - 14 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male' },
+  { id: 'c8', name: 'Brittney', mood: 'neutral', last_litter_cleaned: new Date(Date.now() - 9 * 3600000).toISOString(), avatar_emoji: '🐈', gender: 'female' },
+  { id: 'c9', name: 'Daisy', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 4 * 3600000).toISOString(), avatar_emoji: '🐈', gender: 'female' },
+  { id: 'c10', name: 'Brisa', mood: 'sad', last_litter_cleaned: new Date(Date.now() - 16 * 3600000).toISOString(), avatar_emoji: '🐈', gender: 'female' },
 ];
 
 export const mockAssets: Asset[] = [
@@ -51,17 +51,16 @@ export const mockInventory: ProductInventory[] = [
 ];
 
 export const mockWorkOrders: WorkOrder[] = [
-  { id: 'w1', title: 'Limpiar areneros', description: 'Limpiar los 4 areneros de la casa', assigned_to: '1', status: 'pending', consumable_id: 'p1', consumable_quantity: 0.5, estimated_duration: 20, priority: 'high', category: 'litter', xp_reward: 25, coin_reward: 10, created_at: new Date().toISOString(), completed_at: null },
-  { id: 'w2', title: 'Trapear cocina', description: 'Trapear el piso de la cocina', assigned_to: '2', status: 'pending', consumable_id: 'p4', consumable_quantity: 0.1, estimated_duration: 15, priority: 'medium', category: 'floor', xp_reward: 15, coin_reward: 5, created_at: new Date().toISOString(), completed_at: null },
-  { id: 'w3', title: 'Lavar ropa', description: 'Ciclo de lavado completo', assigned_to: '4', status: 'pending', consumable_id: 'p3', consumable_quantity: 0.2, estimated_duration: 30, priority: 'low', category: 'laundry', xp_reward: 20, coin_reward: 8, created_at: new Date().toISOString(), completed_at: null },
-  { id: 'w4', title: 'Lavar baño a fondo', description: 'Desinfectar sanitarios y lavamanos con agua', assigned_to: null, status: 'pending', consumable_id: 'p4', consumable_quantity: 0.15, estimated_duration: 25, priority: 'high', category: 'bathroom', xp_reward: 30, coin_reward: 12, created_at: new Date().toISOString(), completed_at: null },
-  { id: 'w5', title: 'Sacar basura', description: 'Recolectar y sacar todas las bolsas', assigned_to: '5', status: 'pending', consumable_id: 'p5', consumable_quantity: 1, estimated_duration: 10, priority: 'medium', category: 'waste', xp_reward: 10, coin_reward: 3, created_at: new Date().toISOString(), completed_at: null },
-  { id: 'w6', title: 'Aspirar sala', description: 'Aspirar alfombra y sillones', assigned_to: '3', status: 'in_progress', consumable_id: null, consumable_quantity: 0, estimated_duration: 20, priority: 'medium', category: 'floor', xp_reward: 15, coin_reward: 5, created_at: new Date().toISOString(), completed_at: null },
-  { id: 'w7', title: 'Reponer Arena (Bajo Polvo)', description: 'Agregar arena nueva a los areneros', assigned_to: null, status: 'pending', consumable_id: 'p1', consumable_quantity: 2, estimated_duration: 10, priority: 'critical', category: 'litter', xp_reward: 20, coin_reward: 8, created_at: new Date().toISOString(), completed_at: null },
-  { id: 'w8', title: 'Lavar platos', description: 'Lavar vajilla del día', assigned_to: '2', status: 'pending', consumable_id: 'p7', consumable_quantity: 0.05, estimated_duration: 15, priority: 'medium', category: 'kitchen', xp_reward: 10, coin_reward: 4, created_at: new Date().toISOString(), completed_at: null },
-  { id: 'w9', title: 'Rociar enzimático', description: 'Aplicar limpiador enzimático en seco sobre superficies', assigned_to: null, status: 'pending', consumable_id: 'p2', consumable_quantity: 0.1, estimated_duration: 10, priority: 'medium', category: 'dry_clean', xp_reward: 12, coin_reward: 5, created_at: new Date().toISOString(), completed_at: null },
-  { id: 'w10', title: 'Barrer pasillo', description: 'Barrer pisos del pasillo y entrada', assigned_to: null, status: 'pending', consumable_id: null, consumable_quantity: 0, estimated_duration: 10, priority: 'low', category: 'dry_clean', xp_reward: 8, coin_reward: 3, created_at: new Date().toISOString(), completed_at: null },
-  { id: 'w11', title: 'Lavar piso a fondo', description: 'Lavado profundo con agua y jabón de todos los pisos', assigned_to: null, status: 'pending', consumable_id: 'p4', consumable_quantity: 0.3, estimated_duration: 40, priority: 'low', category: 'bathroom', xp_reward: 35, coin_reward: 15, created_at: new Date().toISOString(), completed_at: null },
+  { id: 'w1', title: 'Lavar trastes', description: 'Usar agua hirviendo para la manteca/mal olor y limpiar orillas del fregadero con cepillo.', assigned_to: '1', status: 'pending', consumable_id: 'p7', consumable_quantity: 0.05, estimated_duration: 30, priority: 'high', category: 'kitchen', xp_reward: 20, coin_reward: 10, created_at: new Date().toISOString(), completed_at: null },
+  { id: 'w2', title: 'Limpieza profunda de baño', description: 'Restregar con detergente inodoro, paredes y piso.', assigned_to: '2', status: 'pending', consumable_id: 'p4', consumable_quantity: 0.1, estimated_duration: 45, priority: 'high', category: 'bathroom', xp_reward: 50, coin_reward: 25, created_at: new Date().toISOString(), completed_at: null },
+  { id: 'w3', title: 'Arenero — Limpieza de heces', description: 'Sacar heces cada 12h. Solo Limpiador Enzimático. PROHIBIDO cloro/amoníaco.', assigned_to: '4', status: 'pending', consumable_id: 'p1', consumable_quantity: 0.5, estimated_duration: 10, priority: 'critical', category: 'litter', xp_reward: 15, coin_reward: 5, created_at: new Date().toISOString(), completed_at: null },
+  { id: 'w4', title: 'Baño de gatos', description: 'Usar champú suave para gatos. Secar completamente con toalla para evitar hipotermia. Inspeccionar piel y orejas.', assigned_to: null, status: 'pending', consumable_id: null, consumable_quantity: 0, estimated_duration: 60, priority: 'medium', category: 'cats', xp_reward: 40, coin_reward: 20, created_at: new Date().toISOString(), completed_at: null },
+  { id: 'w5', title: 'Inspección felina continua', description: 'Revisar ojos, orejas, piel y comportamiento de cada gato. Anotar cualquier signo de malestar.', assigned_to: '5', status: 'pending', consumable_id: null, consumable_quantity: 0, estimated_duration: 15, priority: 'medium', category: 'cats', xp_reward: 10, coin_reward: 5, created_at: new Date().toISOString(), completed_at: null },
+  { id: 'w6', title: 'Cambio de forros de muebles', description: 'Retirar todos los forros protectores de sillones y camas. Lavar en ciclo largo. Colocar forros limpios.', assigned_to: '3', status: 'in_progress', consumable_id: 'p3', consumable_quantity: 0.2, estimated_duration: 40, priority: 'medium', category: 'cleaning', xp_reward: 30, coin_reward: 15, created_at: new Date().toISOString(), completed_at: null },
+  { id: 'w7', title: 'Limpieza profunda del refrigerador', description: 'Sacar TODO. Limpiar con agua tibia y bicarbonato. Revisar fechas de vencimiento. Reorganizar.', assigned_to: null, status: 'pending', consumable_id: null, consumable_quantity: 0, estimated_duration: 90, priority: 'medium', category: 'kitchen', xp_reward: 60, coin_reward: 30, created_at: new Date().toISOString(), completed_at: null },
+  { id: 'w8', title: 'Trapear pisos', description: 'Usar agua caliente con desinfectante diluido. Comenzar desde el fondo hacia la salida.', assigned_to: '2', status: 'pending', consumable_id: 'p4', consumable_quantity: 0.1, estimated_duration: 30, priority: 'medium', category: 'cleaning', xp_reward: 25, coin_reward: 12, created_at: new Date().toISOString(), completed_at: null },
+  { id: 'w9', title: 'Sacar basura', description: 'Recolectar bolsas de todos los cuartos. Reemplazar bolsas vacías inmediatamente.', assigned_to: null, status: 'pending', consumable_id: 'p5', consumable_quantity: 1, estimated_duration: 10, priority: 'low', category: 'general', xp_reward: 10, coin_reward: 5, created_at: new Date().toISOString(), completed_at: null },
+  { id: 'w10', title: 'Rociar enzimático', description: 'Aplicar Limpiador Enzimático en superficies que no puedan mojarse. Dejar actuar 5 minutos.', assigned_to: null, status: 'pending', consumable_id: 'p2', consumable_quantity: 0.1, estimated_duration: 10, priority: 'medium', category: 'cleaning', xp_reward: 15, coin_reward: 8, created_at: new Date().toISOString(), completed_at: null },
 ];
 
 export const mockBounties: BountyMarket[] = [
