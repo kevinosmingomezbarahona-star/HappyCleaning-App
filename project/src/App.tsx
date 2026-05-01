@@ -7,6 +7,7 @@ import { CatStatusGrid } from './components/CatStatusGrid';
 import { BountyMarketPanel } from './components/BountyMarketPanel';
 import { InventoryPanel } from './components/InventoryPanel';
 import { UmapsTaskList } from './components/UmapsTaskList';
+import { TaskFeed } from './components/TaskFeed';
 import {
   mockMembers,
   mockCats,
@@ -169,49 +170,16 @@ function App() {
             </div>
           )}
 
-          {/* Hogar Panel */}
+          {/* Hogar Panel — Mobile-First Task Feed */}
           {activeTab === 'hogar' && (
-            <div className="flex-1 min-h-0 flex flex-col overflow-y-auto bg-white scrollbar-thin">
-              <div className="p-4 space-y-4">
-                <div>
-                  <h2 className="text-lg font-bold text-gray-900">Panel Rápido</h2>
-                  <p className="text-xs text-gray-500">Acceso directo a todo</p>
-                </div>
-
-                <div>
-                  <h3 className="text-sm font-semibold text-gray-800 mb-2">Gatos</h3>
-                  <CatStatusGrid cats={cats} litterOverdue={litterOverdue} />
-                </div>
-
-                <UmapsTaskList
-                  workOrders={workOrders}
-                  members={mockMembers}
-                  waterCutActive={waterCut.is_active}
-                  onCompleteTask={handleCompleteTask}
-                />
-
-                <InventoryPanel inventory={inventory} />
-
-                <BountyMarketPanel
-                  bounties={mockBounties}
-                  members={mockMembers}
-                  workOrders={workOrders}
-                />
-
-                <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
-                  <h3 className="text-sm font-semibold text-gray-800 mb-2">Control UMAPS</h3>
-                  <button
-                    onClick={() => setWaterCut((prev) => ({ ...prev, is_active: !prev.is_active }))}
-                    className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 ${
-                      waterCut.is_active
-                        ? 'bg-red-500 text-white hover:bg-red-600'
-                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                    }`}
-                  >
-                    {waterCut.is_active ? 'Desactivar UMAPS' : 'Activar UMAPS'}
-                  </button>
-                </div>
-              </div>
+            <div className="flex-1 min-h-0 flex flex-col bg-gray-50">
+              <TaskFeed
+                workOrders={workOrders}
+                members={mockMembers}
+                inventory={inventory}
+                waterCutActive={waterCut.is_active}
+                onCompleteTask={handleCompleteTask}
+              />
             </div>
           )}
         </div>
