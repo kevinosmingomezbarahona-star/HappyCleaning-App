@@ -11,6 +11,7 @@ import { TaskFeed } from './components/TaskFeed';
 import { SplashScreen } from './components/SplashScreen';
 import { Sanctuary } from './components/Sanctuary';
 import { AuthScreen } from './components/AuthScreen';
+import { sounds } from './lib/sounds';
 import {
   mockMembers,
   mockCats,
@@ -156,6 +157,7 @@ export default function App() {
         setCats((prev) =>
           prev.map((c) => ({ ...c, mood: 'happy' as const, last_litter_cleaned: new Date().toISOString() }))
         );
+        sounds.play('complete');
         break;
       }
       case 'fair_divide':
@@ -175,6 +177,7 @@ export default function App() {
           : w
       )
     );
+    sounds.play('complete');
   }, []);
 
   // ── Effective members list (replace mock entry if DB member is found) ──────
@@ -262,17 +265,6 @@ export default function App() {
                     <h1 className="text-xl font-bold text-gray-900">Panel Principal</h1>
                     <p className="text-xs text-gray-500">Gestión del hogar en tiempo real</p>
                   </div>
-                  <button
-                    id="toggle-umaps-btn"
-                    onClick={() => setWaterCut((p) => ({ ...p, is_active: !p.is_active }))}
-                    className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition-colors ${
-                      waterCut.is_active
-                        ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                        : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
-                    }`}
-                  >
-                    {waterCut.is_active ? 'UMAPS Activo' : 'Simular UMAPS'}
-                  </button>
                 </div>
 
                 <UmapsTaskList
@@ -335,7 +327,10 @@ export default function App() {
             <button
               key={tab.id}
               id={`nav-tab-${tab.id}`}
-              onClick={() => setActiveTab(tab.id)}
+              onClick={() => {
+                setActiveTab(tab.id);
+                sounds.play('click');
+              }}
               className={`flex flex-col items-center gap-0.5 py-2 px-4 transition-colors ${
                 activeTab === tab.id ? 'text-blue-600' : 'text-gray-400 hover:text-gray-600'
               }`}

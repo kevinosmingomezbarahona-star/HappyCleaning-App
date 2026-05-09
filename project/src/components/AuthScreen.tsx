@@ -3,6 +3,7 @@ import {
   Eye, EyeOff, LogIn, UserPlus, Loader2, AlertTriangle, Home, ArrowLeft,
 } from 'lucide-react';
 import { supabase } from '../lib/supabase';
+import { sounds } from '../lib/sounds';
 
 // ─── Types ──────────────────────────────────────────────────────────────────────
 type AuthMode = 'login' | 'register' | 'forgot';
@@ -130,6 +131,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
 
   // ── Google OAuth ─────────────────────────────────────────────────────────────
   const handleGoogle = async () => {
+    sounds.play('click');
     reset();
     setGoogleLoading(true);
     try {
@@ -190,7 +192,11 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
           {isForgot && (
             <button
               type="button"
-              onClick={() => { setMode('login'); reset(); }}
+              onClick={() => {
+                sounds.play('click');
+                setMode('login');
+                reset();
+              }}
               className="flex items-center gap-1.5 text-white/40 hover:text-white/70 text-xs mb-4 transition-colors"
             >
               <ArrowLeft className="w-3.5 h-3.5" />
@@ -291,7 +297,11 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                   {mode === 'login' && (
                     <button
                       type="button"
-                      onClick={() => { setMode('forgot'); reset(); }}
+                      onClick={() => {
+                        sounds.play('click');
+                        setMode('forgot');
+                        reset();
+                      }}
                       className="text-[11px] text-indigo-400/80 hover:text-indigo-300 transition-colors"
                     >
                       ¿Olvidaste tu contraseña?
@@ -316,7 +326,10 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
                   />
                   <button
                     type="button"
-                    onClick={() => setShowPwd((p) => !p)}
+                    onClick={() => {
+                      sounds.play('click');
+                      setShowPwd((p) => !p);
+                    }}
                     className="absolute right-3 top-1/2 -translate-y-1/2 text-white/25 hover:text-white/60 transition-colors"
                     aria-label={showPwd ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                   >
@@ -346,6 +359,7 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
             <button
               id="auth-submit-btn"
               type="submit"
+              onClick={() => sounds.play('click')}
               disabled={loading}
               className="
                 w-full py-3 rounded-xl
@@ -379,7 +393,11 @@ export function AuthScreen({ onAuthenticated }: AuthScreenProps) {
             <button
               type="button"
               id={mode === 'login' ? 'link-go-register' : 'link-go-login'}
-              onClick={() => { setMode(mode === 'login' ? 'register' : 'login'); reset(); }}
+              onClick={() => {
+                sounds.play('click');
+                setMode(mode === 'login' ? 'register' : 'login');
+                reset();
+              }}
               className="text-indigo-400 hover:text-indigo-300 font-semibold transition-colors"
             >
               {mode === 'login' ? 'Regístrate' : 'Inicia sesión'}

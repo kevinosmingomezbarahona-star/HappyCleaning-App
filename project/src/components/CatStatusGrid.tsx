@@ -89,7 +89,7 @@ export function CatStatusGrid({ cats, litterOverdue }: CatStatusGridProps) {
           </span>
         )}
         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-blue-50 text-blue-600">
-          7 machos
+          6 machos
         </span>
         <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium bg-pink-50 text-pink-600">
           3 hembras

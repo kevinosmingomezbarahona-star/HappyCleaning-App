@@ -56,10 +56,11 @@ export function SplashScreen({ onComplete }: SplashScreenProps) {
       >
         En memoria y homenaje a
         <br />
-        <span className="font-semibold text-white/95">Dayson</span> y{' '}
-        <span className="font-semibold text-white/95">Harry</span>.
+        <span className="font-semibold text-white/95">Dayson</span>,{' '}
+        <span className="font-semibold text-white/95">Harry</span> y{' '}
+        <span className="font-semibold text-white/95">Toby</span>.
         <br />
-        <span className="italic text-white/60">Compañeros fieles.</span>
+        <span className="italic text-white/60">Compañeros fieles. Siempre en nuestros corazones.</span>
       </p>
 
       {/* Thin divider line */}
