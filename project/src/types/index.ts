@@ -6,6 +6,8 @@ export interface HouseholdMember {
   home_coins: number;
   level: number;
   avatar_color: string;
+  /** URL de foto de perfil (círculo). Si está vacío se usa el color + inicial. */
+  avatarUrl?: string;
 }
 
 export interface Cat {
@@ -15,6 +17,8 @@ export interface Cat {
   last_litter_cleaned: string | null;
   avatar_emoji: string;
   gender: 'male' | 'female';
+  /** URL de foto real recortada en círculo. Si está vacío se usa el emoji. */
+  avatarUrl?: string;
 }
 
 export interface Asset {
@@ -48,6 +52,8 @@ export interface WorkOrder {
   coin_reward: number;
   created_at: string;
   completed_at: string | null;
+  /** avatarUrl del miembro que completó la tarea (para mostrar su cara en tarjetas). */
+  completedByAvatarUrl?: string;
 }
 
 export interface BountyMarket {

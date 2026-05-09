@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Flame, CheckCircle2, Filter } from 'lucide-react';
+import { Flame, CheckCircle2 } from 'lucide-react';
 import type { WorkOrder, HouseholdMember, ProductInventory } from '../types';
 import { TaskCard } from './TaskCard';
 import { TaskExecutionModal } from './TaskExecutionModal';
@@ -12,7 +12,7 @@ interface TaskFeedProps {
   onCompleteTask: (taskId: string) => void;
 }
 
-type FilterState = 'all' | 'critical' | 'high' | 'litter';
+type FilterState = 'all' | 'pending' | 'critical' | 'high' | 'litter' | 'completed';
 
 const PRIORITY_ORDER: Record<string, number> = {
   critical: 0,
@@ -32,29 +32,40 @@ export function TaskFeed({
   const [selectedTask, setSelectedTask] = useState<WorkOrder | null>(null);
   const [filter, setFilter] = useState<FilterState>('all');
 
-  // Only pending/in-progress tasks, sorted by priority
-  const activeTasks = workOrders
-    .filter((w) => w.status === 'pending' || w.status === 'in_progress')
-    .sort((a, b) => {
-      const pa = a.category === 'litter' ? PRIORITY_ORDER['litter'] : (PRIORITY_ORDER[a.priority] ?? 3);
-      const pb = b.category === 'litter' ? PRIORITY_ORDER['litter'] : (PRIORITY_ORDER[b.priority] ?? 3);
-      return pa - pb;
-    });
-
-  const filtered = activeTasks.filter((t) => {
-    if (filter === 'all') return true;
-    if (filter === 'litter') return t.category === 'litter';
-    return t.priority === filter;
+  // All tasks sorted by priority (active first, completed last)
+  const sortedAll = [...workOrders].sort((a, b) => {
+    if (a.status === 'completed' && b.status !== 'completed') return 1;
+    if (b.status === 'completed' && a.status !== 'completed') return -1;
+    const pa = a.category === 'litter' ? PRIORITY_ORDER['litter'] : (PRIORITY_ORDER[a.priority] ?? 3);
+    const pb = b.category === 'litter' ? PRIORITY_ORDER['litter'] : (PRIORITY_ORDER[b.priority] ?? 3);
+    return pa - pb;
   });
 
-  const completedCount = workOrders.filter((w) => w.status === 'completed').length;
+  const activeTasks = sortedAll.filter((w) => w.status === 'pending' || w.status === 'in_progress');
+  const completedTasks = sortedAll.filter((w) => w.status === 'completed');
+
+  const filtered = sortedAll.filter((t) => {
+    switch (filter) {
+      case 'pending':  return t.status === 'pending' || t.status === 'in_progress';
+      case 'completed': return t.status === 'completed';
+      case 'critical': return t.priority === 'critical';
+      case 'high':     return t.priority === 'high';
+      case 'litter':   return t.category === 'litter';
+      default:         return true;
+    }
+  });
+
+  const completedCount = completedTasks.length;
   const totalCount = workOrders.length;
+  const progress = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
   const FILTER_TABS: { id: FilterState; label: string }[] = [
-    { id: 'all', label: 'Todas' },
-    { id: 'critical', label: '🔴 Críticas' },
-    { id: 'high', label: '🟠 Altas' },
-    { id: 'litter', label: '🐱 Arenero' },
+    { id: 'all',       label: 'Todas' },
+    { id: 'pending',   label: '⏳ Pendientes' },
+    { id: 'critical',  label: '🔴 Críticas' },
+    { id: 'high',      label: '🟠 Altas' },
+    { id: 'litter',    label: '🐱 Arenero' },
+    { id: 'completed', label: '✅ Hechas' },
   ];
 
   return (
@@ -77,15 +88,15 @@ export function TaskFeed({
             )}
           </div>
 
-          {/* Progress bar */}
-          <div className="w-full bg-gray-100 rounded-full h-1.5 mb-3">
+          {/* Animated progress bar */}
+          <div className="w-full bg-gray-100 rounded-full h-2 mb-3 overflow-hidden">
             <div
-              className="bg-emerald-500 h-1.5 rounded-full transition-all duration-500"
-              style={{ width: `${totalCount > 0 ? (completedCount / totalCount) * 100 : 0}%` }}
+              className="bg-gradient-to-r from-emerald-400 to-teal-500 h-2 rounded-full transition-all duration-700 ease-out"
+              style={{ width: `${progress}%` }}
             />
           </div>
 
-          {/* Filter chips */}
+          {/* Filter chips — horizontally scrollable */}
           <div className="flex gap-2 overflow-x-auto scrollbar-none pb-0.5">
             {FILTER_TABS.map((tab) => (
               <button
@@ -93,9 +104,10 @@ export function TaskFeed({
                 id={`filter-${tab.id}`}
                 onClick={() => setFilter(tab.id)}
                 className={`
-                  flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold transition-all
+                  flex-shrink-0 px-3 py-1.5 rounded-xl text-xs font-semibold
+                  transition-all duration-150
                   ${filter === tab.id
-                    ? 'bg-blue-600 text-white shadow-sm'
+                    ? 'bg-blue-600 text-white shadow-sm scale-105'
                     : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
                   }
                 `}
@@ -114,20 +126,23 @@ export function TaskFeed({
                 <CheckCircle2 className="w-8 h-8 text-emerald-500" />
               </div>
               <p className="text-base font-bold text-gray-700">¡Todo al día!</p>
-              <p className="text-sm text-gray-400 mt-1">No hay tareas pendientes en esta categoría.</p>
+              <p className="text-sm text-gray-400 mt-1">No hay tareas en esta categoría.</p>
             </div>
           ) : (
             filtered.map((task) => {
-              const assigneeName = task.assigned_to
-                ? members.find((m) => m.id === task.assigned_to)?.name
+              const assignee = task.assigned_to
+                ? members.find((m) => m.id === task.assigned_to)
                 : undefined;
               return (
                 <TaskCard
                   key={task.id}
                   task={task}
                   waterCutActive={waterCutActive}
-                  assigneeName={assigneeName}
-                  onClick={(t) => setSelectedTask(t)}
+                  assignee={assignee}
+                  onClick={(t) => {
+                    // Don't open modal for completed tasks
+                    if (t.status !== 'completed') setSelectedTask(t);
+                  }}
                 />
               );
             })

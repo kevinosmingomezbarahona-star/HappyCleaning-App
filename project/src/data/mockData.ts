@@ -18,19 +18,19 @@ export const mockMembers: HouseholdMember[] = [
   { id: '5', name: 'Mirza', role: 'member', xp_points: 750, home_coins: 150, level: 4, avatar_color: '#8B5CF6' },
 ];
 
-// 10 real cats: 7 males, 3 females
+// Active cats (9) — Dayson has moved to the Sanctuary of Remembrance
 export const mockCats: Cat[] = [
-  { id: 'c1', name: 'Dayson', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 2 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male' },
-  { id: 'c2', name: 'Tom', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 3 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male' },
-  { id: 'c3', name: 'Jerry', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 5 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male' },
-  { id: 'c4', name: 'Oliver', mood: 'neutral', last_litter_cleaned: new Date(Date.now() - 8 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male' },
-  { id: 'c5', name: 'Ricky', mood: 'neutral', last_litter_cleaned: new Date(Date.now() - 10 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male' },
-  { id: 'c6', name: 'Felix', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 1 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male' },
-  { id: 'c7', name: 'Topo', mood: 'sad', last_litter_cleaned: new Date(Date.now() - 14 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male' },
-  { id: 'c8', name: 'Brittney', mood: 'neutral', last_litter_cleaned: new Date(Date.now() - 9 * 3600000).toISOString(), avatar_emoji: '🐈', gender: 'female' },
-  { id: 'c9', name: 'Daisy', mood: 'happy', last_litter_cleaned: new Date(Date.now() - 4 * 3600000).toISOString(), avatar_emoji: '🐈', gender: 'female' },
-  { id: 'c10', name: 'Brisa', mood: 'sad', last_litter_cleaned: new Date(Date.now() - 16 * 3600000).toISOString(), avatar_emoji: '🐈', gender: 'female' },
+  { id: 'c2', name: 'Tom',     mood: 'happy',   last_litter_cleaned: new Date(Date.now() - 3  * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male'   },
+  { id: 'c3', name: 'Jerry',   mood: 'happy',   last_litter_cleaned: new Date(Date.now() - 5  * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male'   },
+  { id: 'c4', name: 'Oliver',  mood: 'neutral', last_litter_cleaned: new Date(Date.now() - 8  * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male'   },
+  { id: 'c5', name: 'Ricky',   mood: 'neutral', last_litter_cleaned: new Date(Date.now() - 10 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male'   },
+  { id: 'c6', name: 'Felix',   mood: 'happy',   last_litter_cleaned: new Date(Date.now() - 1  * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male'   },
+  { id: 'c7', name: 'Topo',    mood: 'sad',     last_litter_cleaned: new Date(Date.now() - 14 * 3600000).toISOString(), avatar_emoji: '🐱', gender: 'male'   },
+  { id: 'c8', name: 'Brittney',mood: 'neutral', last_litter_cleaned: new Date(Date.now() - 9  * 3600000).toISOString(), avatar_emoji: '🐈', gender: 'female' },
+  { id: 'c9', name: 'Daisy',   mood: 'happy',   last_litter_cleaned: new Date(Date.now() - 4  * 3600000).toISOString(), avatar_emoji: '🐈', gender: 'female' },
+  { id: 'c10', name: 'Brisa',  mood: 'sad',     last_litter_cleaned: new Date(Date.now() - 16 * 3600000).toISOString(), avatar_emoji: '🐈', gender: 'female' },
 ];
+
 
 export const mockAssets: Asset[] = [
   { id: 'a1', name: 'Trapeador', status: 'available', location: 'Cuarto de limpieza' },
