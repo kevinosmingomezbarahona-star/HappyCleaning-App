@@ -28,26 +28,42 @@ function getKB(task: WorkOrder, inventory: ProductInventory[]): KB {
   // Litter tasks
   if (task.category === 'litter' || lowerTitle.includes('arenero')) {
     const tofu = inventory.find((i) => i.name.toLowerCase().includes('tofu'));
+    const enzimatico = inventory.find((i) => i.name.toLowerCase().includes('enzimático'));
     return {
-      warning: '⚠️ PROHIBIDO: Cloro y Amoníaco. Usan SOLO Limpiador Enzimático cerca de los gatos.',
-      supplies: ['Palita para heces', 'Bolsa de basura', 'Arena de Tofu', 'Limpiador Enzimático'],
+      warning: '🚫 PROHIBIDO: Cloro y Amoníaco. Usa SOLO Limpiador Enzimático. La salud respiratoria de los 9 gatos depende de ti.',
+      supplies: [
+        'Palita para heces',
+        'Bolsa de basura resistente',
+        'Arena de Tofu fresca',
+        `Limpiador Enzimático (stock: ${enzimatico ? enzimatico.current_stock + ' ' + enzimatico.unit : 'sin datos'})`,
+      ],
       tips: [
-        'Sacar TODAS las heces con la palita.',
-        'Si el nivel de arena es bajo, agregar Arena de Tofu fresca.',
+        'Sacar TODAS las heces con la palita, sin excepción.',
+        'Verificar el nivel de arena: si está bajo, agregar Arena de Tofu fresca.',
         `Stock actual de Arena de Tofu: ${tofu ? tofu.current_stock + ' ' + tofu.unit : 'sin datos'}.`,
+        'Rociar una capa fina de Limpiador Enzimático sobre la arena.',
+        'Limpieza obligatoria cada 12 horas para evitar amoníaco volátil.',
+        '🏆 ¡Cada limpieza protege la salud de Tom, Jerry, Oliver, Ricky, Felix, Topo, Brittney, Daisy y Brisa!',
       ],
     };
   }
 
   // Dish washing
-  if (lowerTitle.includes('trastr') || lowerTitle.includes('plato') || lowerTitle.includes('lavar trastr')) {
+  if (lowerTitle.includes('traste') || lowerTitle.includes('plato') || lowerTitle.includes('lavar trast')) {
     return {
-      warning: '🌡️ Usar agua hirviendo si hay manteca o mal olor.',
-      supplies: ['Esponja', 'Jabón de platos', 'Cepillo de dientes (orillas)'],
+      warning: '🌡️ Usar agua HIRVIENDO si hay grasa acumulada o mal olor. El agua tibia no elimina la grasa.',
+      supplies: [
+        'Esponja (lado verde para grasa dura)',
+        'Jabón de platos concentrado',
+        'Cepillo de dientes viejo (para orillas del fregadero)',
+        'Trapo seco para finalizar',
+      ],
       tips: [
-        'Limpiar alrededor del fregadero con esponja.',
-        'Retirar restos acumulados en las orillas con el cepillo.',
-        'Dejar brillante y seco.',
+        'Separar trastes: los más grasosos primero con agua hirviendo.',
+        'Frotar con esponja y jabón hasta que no quede residuo.',
+        'Limpiar las orillas y esquinas del fregadero con el cepillo de dientes.',
+        'Secar el área del fregadero con trapo limpio. Debe quedar brillante.',
+        '🏆 ¡Un fregadero impecable es la tarjeta de presentación del hogar!',
       ],
     };
   }
@@ -55,13 +71,21 @@ function getKB(task: WorkOrder, inventory: ProductInventory[]): KB {
   // Bathroom
   if (task.category === 'bathroom' || lowerTitle.includes('baño')) {
     return {
-      warning: '⚠️ Usar detergente SIN amoníaco. Prohibido cloro cerca de los gatos.',
-      supplies: ['Cepillo de fregar', 'Detergente', 'Limpiavidrios', 'Toallas limpias'],
+      warning: '⚠️ Usar detergente SIN amoníaco ni cloro. La seguridad de los gatos es prioridad.',
+      supplies: [
+        'Cepillo de fregar (cerdas duras)',
+        'Detergente multiusos',
+        'Limpiavidrios para espejo',
+        'Toallas limpias de repuesto',
+        'Guantes de limpieza',
+      ],
       tips: [
-        'Restregar piso y paredes con cepillo y detergente.',
-        'Restregar inodoro por dentro y por fuera.',
-        'Limpiar espejo con limpiavidrios.',
-        'Cambiar toallas si aplica.',
+        'Restregar el inodoro por DENTRO y por FUERA con cepillo y detergente.',
+        'Fregar las paredes del baño con cepillo y detergente (especialmente las juntas).',
+        'Restregar el piso completo, esquinas incluidas.',
+        'Limpiar el espejo con limpiavidrios hasta que quede sin marcas.',
+        'Cambiar las toallas si están húmedas o sucias.',
+        '🏆 ¡Un baño impecable protege la salud de toda la familia!',
       ],
     };
   }
@@ -69,12 +93,14 @@ function getKB(task: WorkOrder, inventory: ProductInventory[]): KB {
   // Cat bathing
   if (lowerTitle.includes('baño de gatos') || lowerTitle.includes('gato')) {
     return {
-      warning: '🐱 Secar completamente. El frío causa hipotermia en gatos.',
-      supplies: ['Champú suave para gatos', 'Toalla grande', 'Secadora (opcional)'],
+      warning: '🐱 Secar completamente al gato. El frío causa hipotermia. NUNCA usar productos humanos.',
+      supplies: ['Champú suave EXCLUSIVO para gatos', 'Toalla grande absorbente', 'Secadora (baja potencia, opcional)'],
       tips: [
-        'Usar champú EXCLUSIVO para gatos, no para humanos.',
-        'Enjuagar completamente sin dejar residuos.',
-        'Secar con toalla y revisar piel y orejas.',
+        'Usar SOLO champú formulado para gatos. Los productos humanos dañan su piel.',
+        'Enjuagar completamente sin dejar residuos de jabón.',
+        'Secar con toalla envolviendo al gato con cariño y firmeza.',
+        'Revisar piel, orejas y ojos durante el baño.',
+        '🏆 ¡Un gato limpio y sano es un gato feliz!',
       ],
     };
   }
@@ -82,11 +108,14 @@ function getKB(task: WorkOrder, inventory: ProductInventory[]): KB {
   // Mopping / floors
   if (lowerTitle.includes('trapear') || lowerTitle.includes('piso')) {
     return {
-      supplies: ['Trapeador', 'Desinfectante diluido', 'Balde'],
+      supplies: ['Trapeador limpio', 'Desinfectante diluido', 'Balde con agua caliente'],
       tips: [
+        'Barrer o aspirar ANTES de trapear.',
         'Usar agua caliente con desinfectante diluido.',
-        'Comenzar desde el fondo hacia la salida.',
+        'Comenzar desde el fondo de la habitación hacia la salida.',
+        'Prestar atención especial a las esquinas y debajo de los muebles.',
         'Dejar secar completamente antes de pisar.',
+        '🏆 ¡Un piso limpio es un hogar seguro para gatos y humanos!',
       ],
     };
   }
@@ -94,12 +123,14 @@ function getKB(task: WorkOrder, inventory: ProductInventory[]): KB {
   // Fridge
   if (lowerTitle.includes('refrigerador')) {
     return {
-      supplies: ['Agua tibia', 'Bicarbonato de sodio', 'Trapo limpio'],
+      supplies: ['Agua tibia', 'Bicarbonato de sodio', 'Trapo limpio', 'Bolsa de basura para vencidos'],
       tips: [
-        'Sacar TODO el contenido primero.',
-        'Limpiar estantes con agua tibia y bicarbonato.',
-        'Revisar fechas de vencimiento.',
-        'Reorganizar y dejar pulcro.',
+        'Sacar TODO el contenido sin excepción.',
+        'Limpiar cada estante con agua tibia y bicarbonato.',
+        'Revisar TODAS las fechas de vencimiento. Desechar lo expirado.',
+        'Reorganizar: lo más viejo adelante, lo nuevo atrás.',
+        'Dejar pulcro y cerrar bien la puerta.',
+        '🏆 ¡Un refrigerador organizado reduce el desperdicio y alimenta mejor!',
       ],
     };
   }
@@ -107,12 +138,14 @@ function getKB(task: WorkOrder, inventory: ProductInventory[]): KB {
   // Enzyme spray
   if (lowerTitle.includes('enzimático') || lowerTitle.includes('enzim')) {
     return {
-      warning: '⏱️ Dejar actuar 5 minutos antes de limpiar.',
-      supplies: ['Limpiador Enzimático', 'Paño limpio'],
+      warning: '⏱️ Dejar actuar 5 minutos MÍNIMO antes de limpiar. No usar cloro.',
+      supplies: ['Limpiador Enzimático', 'Paño limpio de microfibra'],
       tips: [
-        'Aplicar en superficies que no puedan mojarse.',
-        'Dejar actuar 5 minutos.',
-        'Limpiar con paño limpio.',
+        'Aplicar en superficies que no puedan mojarse con agua.',
+        'Rociar de forma uniforme a 20 cm de distancia.',
+        'Dejar actuar 5 minutos completos.',
+        'Limpiar con paño de microfibra en movimientos circulares.',
+        '🏆 ¡El enzimático elimina olores sin dañar la salud de los gatos!',
       ],
     };
   }
@@ -120,7 +153,10 @@ function getKB(task: WorkOrder, inventory: ProductInventory[]): KB {
   // Generic fallback
   return {
     supplies: [],
-    tips: [task.description || 'Sigue las instrucciones de la tarea.'],
+    tips: [
+      task.description || 'Sigue las instrucciones de la tarea.',
+      '🏆 ¡Cada tarea completada acerca a la familia a un hogar perfecto!',
+    ],
   };
 }
 

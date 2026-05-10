@@ -31,6 +31,17 @@ function isLitterOverdue(cats: Cat[]): boolean {
   });
 }
 
+// ─── Household Knowledge Base (System Prompt) ──────────────────────────────
+const HOUSEHOLD_KB = {
+  family: ['Ninive', 'Osmin', 'Kevin', 'Marilyn', 'Mirza'],
+  rules: {
+    platos: 'Lavar platos: Siempre con agua hirviendo si hay grasa o mal olor. Limpiar orillas del fregadero con cepillo de dientes viejo.',
+    banos: 'Baños: Restregar inodoro por dentro y por fuera, paredes y piso con detergente. Sin amoníaco ni cloro cerca de los gatos.',
+    areneros: 'Areneros: Limpieza obligatoria cada 12 horas para evitar amoníaco volátil. PROHIBIDO el cloro. Solo Limpiador Enzimático.',
+  },
+  persona: 'Mayordomo Experto del hogar de la familia. Hablas con autoridad, calidez y orgullo. Cada tarea completada es un acto heroico que protege a la familia y a los 9 gatos.',
+} as const;
+
 function generateBotMessages(
   members: HouseholdMember[],
   workOrders: WorkOrder[],
@@ -41,11 +52,13 @@ function generateBotMessages(
   const messages: ChatMessage[] = [];
   const now = new Date();
   const overdue = isLitterOverdue(cats);
+  const memberNames = members.map((m) => m.name);
+  const greeting = memberNames.length > 0 ? memberNames[0] : 'familia';
 
   messages.push({
     id: 'welcome',
     sender: 'bot',
-    text: `Hola! Soy HomeForce, tu asistente del hogar. Hoy es ${now.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}.`,
+    text: `Buenos días, ${greeting}. Soy HomeForce, el Mayordomo de este hogar. Hoy es ${now.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' })}. Cada tarea que completemos hoy protege a nuestra familia y a nuestros 9 gatos. ¡Hagamos historia!`,
     timestamp: now,
   });
 
@@ -60,10 +73,10 @@ function generateBotMessages(
     messages.push({
       id: 'water-emergency',
       sender: 'bot',
-      text: `Corte UMAPS activo de 5:00 AM a 5:00 PM. Priorizando limpieza en seco. ${blockedTasks.length} tarea${blockedTasks.length > 1 ? 's' : ''} bloqueada${blockedTasks.length > 1 ? 's' : ''} por consumo hídrico. ${dryTasks.length} tarea${dryTasks.length > 1 ? 's' : ''} de limpieza en seco disponible${dryTasks.length > 1 ? 's' : ''}.`,
+      text: `⚡ Protocolo UMAPS activado (5:00 AM – 5:00 PM). ${blockedTasks.length} tarea${blockedTasks.length > 1 ? 's' : ''} bloqueada${blockedTasks.length > 1 ? 's' : ''} por consumo hídrico. Pero no nos detenemos: ${dryTasks.length} misión${dryTasks.length > 1 ? 'es' : ''} de limpieza en seco esperan guerreros valientes.`,
       timestamp: new Date(now.getTime() + 1000),
       actions: [
-        { label: 'Ver tareas secas', action: 'view_dry_tasks', variant: 'primary' },
+        { label: 'Ver misiones secas', action: 'view_dry_tasks', variant: 'primary' },
       ],
     });
   }
@@ -80,10 +93,10 @@ function generateBotMessages(
     messages.push({
       id: 'ammonia-alert',
       sender: 'bot',
-      text: `ALERTA: Areneros vencidos hace más de 12 horas. Riesgo de amoníaco volátil para ${overdueNames.join(', ')}. La exposición prolongada al amoníaco causa problemas respiratorios en los gatos. Es urgente limpiar los areneros.`,
+      text: `🚨 ALERTA CRÍTICA: Los areneros de ${overdueNames.join(', ')} llevan más de 12 horas sin limpieza. El amoníaco volátil está poniendo en riesgo su salud respiratoria. ${HOUSEHOLD_KB.rules.areneros}. ¡Actúa ahora, tú eres su protector!`,
       timestamp: new Date(now.getTime() + 2000),
       actions: [
-        { label: 'Limpiar areneros', action: 'complete_litter', variant: 'danger' },
+        { label: '🛡️ Proteger areneros', action: 'complete_litter', variant: 'danger' },
       ],
     });
   } else {
@@ -92,10 +105,10 @@ function generateBotMessages(
       messages.push({
         id: 'cats-alert',
         sender: 'bot',
-        text: `${sadCats.map((c) => c.name).join(', ')} ${sadCats.length > 1 ? 'están' : 'está'} triste${sadCats.length > 1 ? 's' : ''}. Los areneros necesitan atención.`,
+        text: `${sadCats.map((c) => c.name).join(', ')} ${sadCats.length > 1 ? 'necesitan' : 'necesita'} tu atención. Un arenero limpio cambia su día. Recuerda: ${HOUSEHOLD_KB.rules.areneros}`,
         timestamp: new Date(now.getTime() + 2000),
         actions: [
-          { label: 'Limpiar areneros', action: 'complete_litter', variant: 'danger' },
+          { label: '🛡️ Limpiar areneros', action: 'complete_litter', variant: 'danger' },
         ],
       });
     }
@@ -107,11 +120,11 @@ function generateBotMessages(
     messages.push({
       id: 'tasks',
       sender: 'bot',
-      text: `Tienes ${pendingTasks.length} tareas pendientes${highPriority.length > 0 ? `, ${highPriority.length} de alta prioridad` : ''}. La más urgente: "${highPriority[0]?.title || pendingTasks[0].title}".`,
+      text: `Tienes ${pendingTasks.length} misiones pendientes${highPriority.length > 0 ? ` (${highPriority.length} de alto impacto)` : ''}. La más urgente: "${highPriority[0]?.title || pendingTasks[0].title}". Cada tarea completada es un paso hacia un hogar impecable para Ninive, Osmin, Kevin, Marilyn y Mirza.`,
       timestamp: new Date(now.getTime() + 3000),
       actions: [
-        { label: 'Ver tareas', action: 'view_tasks', variant: 'primary' },
-        { label: 'Distribuir justo', action: 'fair_divide', variant: 'secondary' },
+        { label: '⚔️ Ver misiones', action: 'view_tasks', variant: 'primary' },
+        { label: '⚖️ Distribuir justo', action: 'fair_divide', variant: 'secondary' },
       ],
     });
   }
@@ -123,7 +136,7 @@ function generateBotMessages(
     messages.push({
       id: 'inventory-alert',
       sender: 'bot',
-      text: `Niveles de inventario bajos: ${items.map((i) => `${i.name} (${i.current_stock} ${i.unit})`).join(', ')}.`,
+      text: `📦 Suministros bajos: ${items.map((i) => `${i.name} (${i.current_stock} ${i.unit})`).join(', ')}. Un hogar preparado es un hogar fuerte.`,
       timestamp: new Date(now.getTime() + 4000),
       actions: [
         { label: 'Ver inventario', action: 'view_inventory', variant: 'secondary' },
@@ -139,7 +152,7 @@ function generateBotMessages(
   messages.push({
     id: 'streak',
     sender: 'bot',
-    text: `${topStreakMember.member.name} lidera con ${topStreakMember.member.xp_points} XP. Sigue así para subir de nivel!`,
+    text: `🏆 ${topStreakMember.member.name} lidera con ${topStreakMember.member.xp_points} XP. ¡Eso es compromiso real! El hogar entero se beneficia de tu esfuerzo.`,
     timestamp: new Date(now.getTime() + 5000),
   });
 
@@ -227,7 +240,7 @@ export function ChatAgent({
           <h2 className="text-sm font-semibold text-gray-800">HomeForce</h2>
           <p className="text-[10px] text-emerald-500 font-medium flex items-center gap-1">
             <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full inline-block" />
-            En línea
+            Mayordomo Experto — En línea
           </p>
         </div>
         {litterOverdue && (
@@ -362,56 +375,86 @@ function generateResponse(
   const lower = input.toLowerCase();
   const pending = workOrders.filter((w) => w.status === 'pending');
 
+  // Water / UMAPS
   if (lower.includes('umaps') || lower.includes('agua') || lower.includes('corte')) {
     if (waterCutActive) {
       return {
         id: `resp-${Date.now()}`,
         sender: 'bot',
-        text: 'Corte UMAPS activo de 5:00 AM a 5:00 PM. Las tareas que consumen agua están bloqueadas. Prioriza limpieza en seco como rociar enzimático o barrer.',
+        text: '⚡ Protocolo UMAPS activo (5:00 AM – 5:00 PM). Las tareas hídricas están bloqueadas, pero un verdadero guardián del hogar no se detiene. Prioriza misiones en seco: rociar enzimático, barrer y limpiar areneros. ¡Adelante!',
         timestamp: new Date(),
         actions: [
-          { label: 'Ver tareas secas', action: 'view_dry_tasks', variant: 'primary' },
+          { label: 'Ver misiones secas', action: 'view_dry_tasks', variant: 'primary' },
         ],
       };
     }
     return {
       id: `resp-${Date.now()}`,
       sender: 'bot',
-      text: 'No hay corte de agua activo ahora. Todas las tareas están disponibles.',
+      text: '✅ No hay corte de agua activo. Todas las misiones están disponibles. ¡Es hora de dar lo mejor por el hogar de Ninive, Osmin, Kevin, Marilyn y Mirza!',
       timestamp: new Date(),
     };
   }
 
-  if (lower.includes('tarea') || lower.includes('pendiente')) {
+  // Tasks
+  if (lower.includes('tarea') || lower.includes('pendiente') || lower.includes('misión') || lower.includes('mision')) {
     return {
       id: `resp-${Date.now()}`,
       sender: 'bot',
-      text: `Hay ${pending.length} tareas pendientes: ${pending.slice(0, 3).map((t) => t.title).join(', ')}${pending.length > 3 ? '...' : ''}.`,
+      text: `Hay ${pending.length} misiones esperando héroes: ${pending.slice(0, 3).map((t) => `"${t.title}"`).join(', ')}${pending.length > 3 ? '...' : ''}. Cada una es una oportunidad de ganar XP y proteger a tu familia. ¿Quién acepta el reto?`,
       timestamp: new Date(),
       actions: [
-        { label: 'Ver todas', action: 'view_tasks', variant: 'primary' },
-        { label: 'Distribuir', action: 'fair_divide', variant: 'secondary' },
+        { label: '⚔️ Ver todas', action: 'view_tasks', variant: 'primary' },
+        { label: '⚖️ Distribuir', action: 'fair_divide', variant: 'secondary' },
       ],
     };
   }
 
+  // Platos / trastes
+  if (lower.includes('plato') || lower.includes('traste') || lower.includes('fregadero') || lower.includes('lavar')) {
+    return {
+      id: `resp-${Date.now()}`,
+      sender: 'bot',
+      text: `📋 Protocolo de Cocina: ${HOUSEHOLD_KB.rules.platos}. Un fregadero brillante es la primera señal de un hogar bien cuidado. ¡Tú puedes con esto!`,
+      timestamp: new Date(),
+      actions: [
+        { label: '⚔️ Ver misiones', action: 'view_tasks', variant: 'primary' },
+      ],
+    };
+  }
+
+  // Baños
+  if (lower.includes('baño') || lower.includes('inodoro') || lower.includes('sanitario')) {
+    return {
+      id: `resp-${Date.now()}`,
+      sender: 'bot',
+      text: `🚿 Protocolo de Baños: ${HOUSEHOLD_KB.rules.banos}. Un baño impecable refleja el orgullo de esta familia. ¡Manos a la obra!`,
+      timestamp: new Date(),
+      actions: [
+        { label: '⚔️ Ver misiones', action: 'view_tasks', variant: 'primary' },
+      ],
+    };
+  }
+
+  // Areneros / gatos / amoníaco
   if (lower.includes('gato') || lower.includes('arenero') || lower.includes('amoniaco') || lower.includes('amoníaco')) {
     return {
       id: `resp-${Date.now()}`,
       sender: 'bot',
-      text: 'Los areneros necesitan limpieza cada 12 horas para prevenir acumulación de amoníaco volátil. La exposición prolongada causa problemas respiratorios en Dayson, Tom, Jerry, Oliver, Ricky, Felix, Topo, Brittney, Daisy y Brisa.',
+      text: `🐱 Protocolo Felino: ${HOUSEHOLD_KB.rules.areneros}. Los 9 gatos (Tom, Jerry, Oliver, Ricky, Felix, Topo, Brittney, Daisy y Brisa) dependen de ti. Eres su guardián. ¡Protégelos!`,
       timestamp: new Date(),
       actions: [
-        { label: 'Limpiar areneros', action: 'complete_litter', variant: 'danger' },
+        { label: '🛡️ Proteger areneros', action: 'complete_litter', variant: 'danger' },
       ],
     };
   }
 
-  if (lower.includes('inventario') || lower.includes('stock')) {
+  // Inventory
+  if (lower.includes('inventario') || lower.includes('stock') || lower.includes('suministro')) {
     return {
       id: `resp-${Date.now()}`,
       sender: 'bot',
-      text: 'Puedo mostrarte el estado del inventario. Algunos productos están bajos.',
+      text: '📦 Un buen mayordomo siempre vigila los suministros. Revisemos los niveles de inventario para que nada falte cuando más se necesite.',
       timestamp: new Date(),
       actions: [
         { label: 'Ver inventario', action: 'view_inventory', variant: 'secondary' },
@@ -419,25 +462,42 @@ function generateResponse(
     };
   }
 
+  // XP / levels
   if (lower.includes('nivel') || lower.includes('xp') || lower.includes('puntos')) {
     const top = members.reduce((a, b) => (a.xp_points > b.xp_points ? a : b));
+    const bottom = members.reduce((a, b) => (a.xp_points < b.xp_points ? a : b));
     return {
       id: `resp-${Date.now()}`,
       sender: 'bot',
-      text: `${top.name} lidera con ${top.xp_points} XP (Nivel ${top.level}). ${members[members.length - 1].name} necesita motivación con solo ${members[members.length - 1].xp_points} XP.`,
+      text: `🏆 ${top.name} lidera con ${top.xp_points} XP (Nivel ${top.level}). ¡Ejemplo de compromiso! ${bottom.name} va con ${bottom.xp_points} XP — ¡una gran oportunidad para subir y demostrar de qué está hecho!`,
       timestamp: new Date(),
     };
   }
 
+  // Family members
+  if (HOUSEHOLD_KB.family.some((name) => lower.includes(name.toLowerCase()))) {
+    const matchedName = HOUSEHOLD_KB.family.find((name) => lower.includes(name.toLowerCase())) || '';
+    const member = members.find((m) => m.name.toLowerCase() === matchedName.toLowerCase());
+    if (member) {
+      return {
+        id: `resp-${Date.now()}`,
+        sender: 'bot',
+        text: `${member.name} tiene ${member.xp_points} XP y ${member.home_coins} Monedas del Hogar (Nivel ${member.level}). ${member.role === 'admin' ? 'Como administradora, su liderazgo guía al equipo.' : 'Su esfuerzo fortalece a todo el hogar.'} ¡Sigue así!`,
+        timestamp: new Date(),
+      };
+    }
+  }
+
+  // Default fallback
   return {
     id: `resp-${Date.now()}`,
     sender: 'bot',
-    text: 'Puedo ayudarte con tareas, inventario, gatos, distribución justa, o estado UMAPS. ¿Qué necesitas?',
+    text: 'Como Mayordomo de este hogar, puedo orientarte sobre misiones, areneros, baños, cocina, inventario o distribución justa. ¿En qué puedo servir a la familia?',
     timestamp: new Date(),
     actions: [
-      { label: 'Tareas', action: 'view_tasks', variant: 'primary' },
-      { label: 'Inventario', action: 'view_inventory', variant: 'secondary' },
-      { label: 'Distribuir justo', action: 'fair_divide', variant: 'secondary' },
+      { label: '⚔️ Misiones', action: 'view_tasks', variant: 'primary' },
+      { label: '📦 Inventario', action: 'view_inventory', variant: 'secondary' },
+      { label: '⚖️ Distribuir justo', action: 'fair_divide', variant: 'secondary' },
     ],
   };
 }
@@ -453,24 +513,24 @@ function generateActionResponse(
       return {
         id: `action-resp-${Date.now()}`,
         sender: 'bot',
-        text: 'Areneros limpios! Se dedujeron 0.5 kg de Arena de Tofu y 0.1 L de Limpiador Enzimático. +25 XP, +10 Monedas del Hogar. Los 10 gatos están a salvo del amoníaco.',
+        text: '🛡️ ¡Areneros protegidos! Se dedujeron 0.5 kg de Arena de Tofu y 0.1 L de Limpiador Enzimático. +25 XP, +10 🪙. Los 9 gatos respiran aire limpio gracias a tu valentía. ¡Eso es ser un guardián!',
         timestamp: new Date(),
       };
     case 'fair_divide':
       return {
         id: `action-resp-${Date.now()}`,
         sender: 'bot',
-        text: 'Tareas redistribuidas usando el algoritmo de División Justa (EF1). La carga de desutilidad está equilibrada según las preferencias de cada quien. Revisa el Panel Principal para ver la distribución.',
+        text: '⚖️ Misiones redistribuidas con el algoritmo de División Justa (EF1). La carga está equilibrada según las fortalezas de Ninive, Osmin, Kevin, Marilyn y Mirza. ¡Juntos somos invencibles!',
         timestamp: new Date(),
       };
     case 'view_tasks':
       return {
         id: `action-resp-${Date.now()}`,
         sender: 'bot',
-        text: `Tareas pendientes: ${workOrders.filter((w) => w.status === 'pending').map((t) => `"${t.title}"`).join(', ')}. Usa "Distribuir justo" para asignarlas equitativamente.`,
+        text: `⚔️ Misiones activas: ${workOrders.filter((w) => w.status === 'pending').map((t) => `"${t.title}"`).join(', ')}. Cada misión completada nos acerca a un hogar perfecto. ¿Quién toma el reto primero?`,
         timestamp: new Date(),
         actions: [
-          { label: 'Distribuir justo', action: 'fair_divide', variant: 'primary' },
+          { label: '⚖️ Distribuir justo', action: 'fair_divide', variant: 'primary' },
         ],
       };
     case 'view_dry_tasks':
@@ -478,22 +538,22 @@ function generateActionResponse(
         id: `action-resp-${Date.now()}`,
         sender: 'bot',
         text: waterCutActive
-          ? 'Tareas de limpieza en seco disponibles: Rociar enzimático, Barrer pasillo, Limpiar areneros, Sacar basura. Estas no consumen agua y son seguras durante el corte UMAPS.'
-          : 'No hay corte de agua activo. Todas las tareas están disponibles.',
+          ? '💨 Misiones de limpieza en seco: Rociar enzimático, Barrer pasillo, Limpiar areneros, Sacar basura. ¡No necesitamos agua para ser héroes!'
+          : '✅ No hay corte de agua activo. Todas las misiones están disponibles. ¡Adelante!',
         timestamp: new Date(),
       };
     case 'view_inventory':
       return {
         id: `action-resp-${Date.now()}`,
         sender: 'bot',
-        text: 'Revisa el panel de inventario para ver los niveles actuales. Los productos críticos están marcados en rojo.',
+        text: '📦 Revisa el panel de inventario. Los productos críticos están marcados en rojo. Un hogar preparado nunca es tomado por sorpresa.',
         timestamp: new Date(),
       };
     default:
       return {
         id: `action-resp-${Date.now()}`,
         sender: 'bot',
-        text: 'Acción registrada. Necesitas algo más?',
+        text: '✅ Acción registrada. ¿En qué más puedo servir a la familia?',
         timestamp: new Date(),
       };
   }

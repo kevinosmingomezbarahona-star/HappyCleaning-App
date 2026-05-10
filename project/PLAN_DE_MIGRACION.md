@@ -12,13 +12,13 @@
     3. **Subir foto "Después":** Captura final para validar la completitud.
 
 ## Fase 2: Granularidad de Tareas (Knowledge Base Familiar)
-- [ ] **Reestructurar las `Work_Orders` con instrucciones microscópicas.** Ejemplos obligatorios:
+- [x] **Reestructurar las `Work_Orders` con instrucciones microscópicas.** Ejemplos obligatorios:
     - **Lavar trastes:** "Usar agua hirviendo para la manteca/mal olor y limpiar orillas del fregadero con cepillo."
     - **Baños:** "Restregar con detergente inodoro, paredes y piso."
     - **Arenero:** "Sacar heces cada 12h. Solo Limpiador Enzimático. PROHIBIDO cloro/amoníaco."
 
 ## Fase 3: Infraestructura de Almacenamiento (Storage)
-- [ ] **Configurar el bucket `task-audits`** en Supabase para alojar las fotografías de evidencia (Antes/Después).
+- [x] **Configurar el bucket `task-audits`** en Supabase para alojar las fotografías de evidencia (Antes/Después).
 
 ---
 
@@ -59,15 +59,15 @@
 ---
 
 ## Fase 7: Santuario del Recuerdo y Limpieza de UI
-- [ ] Eliminar la redundancia visual: La pestaña "Panel" (Dashboard) NO debe mostrar el grid de gatos. Solo debe mostrar las métricas, progreso y al final, una nueva sección llamada "Santuario del Recuerdo".
-- [ ] Santuario del Recuerdo: Aquí vivirán las tarjetas en escala de grises de Dayson, Harry y Toby.
-- [ ] La pestaña "Hogar" (Tareas) será el único lugar donde aparezcan los gatos activos (ya que su limpieza de areneros es una tarea) y el feed de tareas.
-- [ ] Actualizar los mocks: Dayson se mueve de gatos activos al Santuario (campo `status: 'remembered'`).
+- [x] Eliminar la redundancia visual: La pestaña "Panel" (Dashboard) NO debe mostrar el grid de gatos. Solo debe mostrar las métricas, progreso y al final, una nueva sección llamada "Santuario del Recuerdo".
+- [x] Santuario del Recuerdo: Aquí vivirán las tarjetas en escala de grises de Dayson, Harry y Toby.
+- [x] La pestaña "Hogar" (Tareas) será el único lugar donde aparezcan los gatos activos (ya que su limpieza de areneros es una tarea) y el feed de tareas.
+- [x] Actualizar los mocks: Dayson se mueve de gatos activos al Santuario (campo `status: 'remembered'`).
 
 ---
 
 ## Fase 8: Diseño Sonoro (Dopamina UI)
-- [ ] Integrar la API de Audio HTML5 para reproducir sonidos cortos y agradables (estilo Duolingo) en dos acciones críticas:
+- [x] Integrar la API de Audio HTML5 para reproducir sonidos cortos y agradables (estilo Duolingo) en dos acciones críticas:
   1. Al hacer clic en un botón de acción.
   2. Al completar exitosamente una tarea.
 
@@ -78,11 +78,11 @@
 | Fase | Estado | Prioridad |
 |------|--------|-----------|
 | Fase 1: Rediseño UI/UX | 🔴 Pendiente | **INMEDIATA** |
-| Fase 2: Granularidad KB | 🔴 Pendiente | Alta |
-| Fase 3: Storage | 🔴 Pendiente | Alta |
+| Fase 2: Granularidad KB | 🟡 En Progreso | Alta |
+| Fase 3: Storage | 🟡 En Progreso | Alta |
 | Fase 4: Datos Reales | 🟡 En Progreso | Alta |
 | Fase 5: Inmersión Emocional (Smooth UI) | ✅ Completada | — |
 | Fase 6: Autenticación y Seguridad | 🟡 En Progreso | **INMEDIATA** |
-| Fase 7: Santuario del Recuerdo y Limpieza UI | 🟡 En Progreso | Alta |
-| Fase 8: Diseño Sonoro | 🔴 Pendiente | Media |
+| Fase 7: Santuario del Recuerdo y Limpieza UI | ✅ Completada | — |
+| Fase 8: Diseño Sonoro | ✅ Completada | — |
 
